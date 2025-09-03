@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 from datetime import date, datetime
 import tkinter as tk
 from tkinter import messagebox, ttk
@@ -167,3 +168,146 @@ scorll_y=ttk.Scrollbar(frame_pacientes,orient="vertical",command=treeview.yview)
 treeview.configure(yscrollcommand=scorll_y.set)
 scorll_y.grid(row=6,column=2,sticky="ns")
 ventana_principal.mainloop()
+=======
+from pydoc import text
+import tkinter as tk
+from tkinter import messagebox, ttk
+
+ventana_principal=tk.Tk()
+ventana_principal.title("Libro de Pacientes y Doctores")
+ventana_principal.geometry("700x650")
+#contenedor notebook
+pestanas=ttk.Notebook(ventana_principal)
+#Crear frames
+frame_pacientes=ttk.Frame(pestanas)
+frame_doctores=ttk.Frame(pestanas)
+#Agregar frames a las pestanas
+pestanas.add(frame_pacientes, text="Pacientes")
+pestanas.add(frame_doctores, text="Doctores")
+#Mostrar las pestanas
+pestanas.pack(expand=True, fill="both")
+#Contenido frame pacientes
+nombreLabel=ttk.Label(frame_pacientes, text="Nombre del Paciente:")
+nombreLabel.grid(row=0, column=0, padx=10, pady=10, sticky="w")
+nombreEntry=ttk.Entry(frame_pacientes)
+nombreEntry.grid(row=0, column=1, padx=10, pady=10)
+#Fecha de Nacimiento
+fechaLabel=ttk.Label(frame_pacientes, text="Fecha de Nacimiento (DD/MM/AAAA):")
+fechaLabel.grid(row=1, column=0, padx=10, pady=10, sticky="w")
+fechaEntry=ttk.Entry(frame_pacientes)
+fechaEntry.grid(row=1, column=1, padx=10, pady=10)
+#Edad
+edadP=ttk.Label(frame_pacientes, text="Edad:")
+edadP.grid(row=2, column=0, padx=5, pady=5, sticky="w")
+edadP=ttk.Entry(frame_pacientes,state="readonly")
+edadP.grid(row=2, column=1, padx=10, pady=10)
+#Genero
+generoP=ttk.Label(frame_pacientes, text="Genero:")
+generoP.grid(row=3, column=0, padx=5, pady=5, sticky="w")
+rbGenero=tk.StringVar()
+rbGenero.set("Masculino")
+rbMasculino=ttk.Radiobutton(frame_pacientes, text="Masculino", variable=rbGenero, value="Masculino")
+rbMasculino.grid(row=3, column=1, padx=10, pady=5, sticky="w")
+rbFemenino=ttk.Radiobutton(frame_pacientes, text="Femenino", variable=rbGenero, value="Femenino")
+rbFemenino.grid(row=4, column=1, padx=10, pady=5, sticky="w")
+#Grupo Sanguineo
+grupoLabel=ttk.Label(frame_pacientes, text="Grupo Sanguineo:")
+grupoLabel.grid(row=5, column=0, padx=10, pady=10, sticky="w")
+grupoEntry=ttk.Entry(frame_pacientes)
+grupoEntry.grid(row=5, column=1, padx=10, pady=10)
+#Tipo de Seguro
+seguroLabel=ttk.Label(frame_pacientes, text="Tipo de Seguro:")
+seguroLabel.grid(row=6, column=0, padx=10, pady=10, sticky="w")
+tipo_seguro=tk.StringVar()
+seguroCombo=ttk.Combobox(frame_pacientes, values=["Publico", "Privado", "Ninguno"], state="readonly",textvariable=tipo_seguro)
+seguroCombo.grid(row=6, column=1, padx=10, pady=10)
+#Centro Medico
+centroLabel=ttk.Label(frame_pacientes, text="Centro Medico:")
+centroLabel.grid(row=7, column=0, padx=10, pady=10, sticky="w")
+centro_medico=tk.StringVar()
+centroCombo=ttk.Combobox(frame_pacientes, values=["Clinica Norte", "Hospital General", "Centro del Sur"], textvariable=centro_medico)
+centroCombo.grid(row=7, column=1, padx=10, pady=10)
+#Frame para los botones
+btn_frame=ttk.Frame(frame_pacientes)
+btn_frame.grid(row=8,column=0,columnspan=2,pady=5,sticky="w")
+#boton registrar
+btn_registrar=ttk.Button(btn_frame,text="Registrar",command="")
+btn_registrar.grid(row=9,column=0,padx=5)
+#boton Eliminar
+btn_eliminar=ttk.Button(btn_frame,text="Eliminar",command="")
+btn_eliminar.grid(row=9,column=1,padx=5)
+#Crear TreeView 
+treeview = ttk.Treeview(frame_pacientes,columns=("Nombre", "FechaN", "Edad", "Genero", "GrupoS", "TipoS", "CentroM"),show="headings")
+#Definir encabezados
+treeview.heading("Nombre",text="NombreCompleto")
+treeview.heading("FechaN",text="Fecha Nacimiento")
+treeview.heading("Edad",text="Edad")
+treeview.heading("Genero",text="Genero")
+treeview.heading("GrupoS",text="Grupo Sanguineo")
+treeview.heading("TipoS",text="Tipo Seguro")
+treeview.heading("CentroM",text="Centro Medico")
+#Definir anchos
+treeview.column("Nombre",width=120)
+treeview.column("FechaN",width=120)
+treeview.column("Edad",width=50,anchor="center")
+treeview.column("Genero",width=60,anchor="center")
+treeview.column("GrupoS",width=100,anchor="center")
+treeview.column("TipoS",width=100,anchor="center")
+treeview.column("CentroM",width=120)
+#Ubicar el TreeView
+treeview.grid(row=10,column=0,columnspan=2,sticky="nsew",padx=5,pady=10)
+#Scrollbar
+scorll_y=ttk.Scrollbar(frame_pacientes,orient="vertical",command=treeview.yview)
+treeview.configure(yscrollcommand=scorll_y.set)
+scorll_y.grid(row=10,column=2,sticky="ns")
+
+#Doctores
+nombreLabel=ttk.Label(frame_doctores, text="Nombre:")
+nombreLabel.grid(row=0, column=1, padx=10, pady=10)
+nombreEntry=ttk.Entry(frame_doctores)
+nombreEntry.grid(row=0, column=2, padx=10, pady=10)
+#Especialidad
+especialidadLabel=ttk.Label(frame_doctores, text="Especialidad:")
+especialidadLabel.grid(row=2, column=1, padx=10, pady=10)
+especialidad=tk.StringVar()
+especialidadCombo=ttk.Combobox(frame_doctores, values=["Cardiologia", "Neurologia","Pediatria","Traumatologia", "Ninguno"], state="readonly",textvariable=especialidad)
+especialidadCombo.grid(row=2, column=2, padx=10, pady=10)
+#Edad
+edadP=tk.Label(frame_doctores, text="Edad:")
+edadP.grid(row=3, column=1, padx=5, pady=5)
+edadSpin=tk.Spinbox(frame_doctores, from_=18, to=90)
+edadSpin.grid(row=3, column=2, padx=10, pady=10)
+#Telefono
+telLabel=ttk.Label(frame_doctores,text="Telefono")
+telLabel.grid(row=4,column=1,padx=10,pady=10)
+telEntry=ttk.Entry(frame_doctores)
+telEntry.grid(row=4, column=2, padx=10, pady=10)
+#Frame para los botones
+btn_frame=ttk.Frame(frame_doctores)
+btn_frame.grid(row=5,column=1,columnspan=2,pady=5,sticky="w")
+#boton registrar
+btn_registrar=tk.Button(btn_frame,text="Registrar",command="",bg="#008f39",fg="white")
+btn_registrar.grid(row=5,column=1,padx=5)
+#boton Eliminar
+btn_eliminar=tk.Button(btn_frame,text="Eliminar",command="",bg="red",fg="white")
+btn_eliminar.grid(row=5,column=2,padx=5)
+#Crear TreeView 
+treeview = ttk.Treeview(frame_doctores,columns=("Nombre","Especialidad", "Edad","telefono"),show="headings")
+#Definir encabezados
+treeview.heading("Nombre",text="Nombre Completo")
+treeview.heading("Especialidad",text="Especialidad")
+treeview.heading("Edad",text="Edad")
+treeview.heading("telefono",text="telefono")
+#Definir anchos
+treeview.column("Nombre",width=120)
+treeview.column("Especialidad",width=120)
+treeview.column("Edad",width=50,anchor="center")
+treeview.column("telefono",width=120,anchor="center")
+#Ubicar el TreeView
+treeview.grid(row=6,column=1,columnspan=2,sticky="nsew",padx=5,pady=10)
+#Scrollbar
+scorll_y=ttk.Scrollbar(frame_pacientes,orient="vertical",command=treeview.yview)
+treeview.configure(yscrollcommand=scorll_y.set)
+scorll_y.grid(row=6,column=2,sticky="ns")
+ventana_principal.mainloop()
+>>>>>>> 49203089e246ead8b1fdad27602fe8832cbe0616
