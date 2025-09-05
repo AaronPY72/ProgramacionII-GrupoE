@@ -1,4 +1,5 @@
 from datetime import date, datetime
+from pydoc import doc
 import tkinter as tk
 from tkinter import messagebox, ttk
 
@@ -27,7 +28,60 @@ def enmascarar_fecha(texto):
     else:
         edadVar.set("")
     return True
-
+paciente_data=[]
+doctores_data=[]
+def registrarPaciente():
+    paciente={
+        "Nombre": nombreEntry.get(),
+        "FechaN": fechaEntry.get(),
+        "Edad": edadVar.get(),
+        "Genero": rbGenero.get(),
+        "GrupoS": grupoEntry.get(),
+        "TipoS": tipo_seguro.get(),
+        "CentroM": centro_medico.get()
+    }
+    paciente_data.append(paciente)
+    cargar_treeview()
+    
+def cargar_treeview():
+    for paciente in treeview.get_children():
+        treeview.delete(paciente)
+    for i, item in enumerate(paciente_data):
+        treeview.insert(
+            "","end", iid=str(i),
+            values=(
+                item["Nombre"],
+                item["FechaN"],
+                item["Edad"],
+                item["Genero"],
+                item["GrupoS"],
+                item["TipoS"],
+                item["CentroM"]
+            )
+        )
+def registrarDoctores():
+    doctor={
+        "NombreD": nombreEntryD.get(),
+        "Especialidad": especialidad.get(),
+        "EdadD": edadSpin.get(),
+        "Telefono": telEntry.get()
+    }
+    doctores_data.append(doctor)
+    cargar_treeviewD()
+    
+def cargar_treeviewD():
+    for doctor in treeviewD.get_children():
+        treeviewD.delete(doctor)
+    for i, item in enumerate(doctores_data):
+        treeviewD.insert(
+            "","end", iid=str(i),
+            values=(
+                item["NombreD"],
+                item["Especialidad"],
+                item["EdadD"],
+                item["Telefono"]
+            )
+        )
 ventana_principal=tk.Tk()
 ventana_principal.title("Libro de Pacientes y Doctores")
 ventana_principal.geometry("700x650")
@@ -88,7 +142,7 @@ centroCombo.grid(row=7, column=1, padx=10, pady=10)
 btn_frame=ttk.Frame(frame_pacientes)
 btn_frame.grid(row=8,column=0,columnspan=2,pady=5,sticky="w")
 #boton registrar
-btn_registrar=ttk.Button(btn_frame,text="Registrar",command="")
+btn_registrar=ttk.Button(btn_frame,text="Registrar",command=registrarPaciente)
 btn_registrar.grid(row=9,column=0,padx=5)
 #boton Eliminar
 btn_eliminar=ttk.Button(btn_frame,text="Eliminar",command="")
@@ -96,7 +150,7 @@ btn_eliminar.grid(row=9,column=1,padx=5)
 #Crear TreeView 
 treeview = ttk.Treeview(frame_pacientes,columns=("Nombre", "FechaN", "Edad", "Genero", "GrupoS", "TipoS", "CentroM"),show="headings")
 #Definir encabezados
-treeview.heading("Nombre",text="NombreCompleto")
+treeview.heading("Nombre",text="Nombre Completo")
 treeview.heading("FechaN",text="Fecha Nacimiento")
 treeview.heading("Edad",text="Edad")
 treeview.heading("Genero",text="Genero")
@@ -104,10 +158,10 @@ treeview.heading("GrupoS",text="Grupo Sanguineo")
 treeview.heading("TipoS",text="Tipo Seguro")
 treeview.heading("CentroM",text="Centro Medico")
 #Definir anchos
-treeview.column("Nombre",width=120)
+treeview.column("Nombre",width=130)
 treeview.column("FechaN",width=120)
 treeview.column("Edad",width=50,anchor="center")
-treeview.column("Genero",width=60,anchor="center")
+treeview.column("Genero",width=80,anchor="center")
 treeview.column("GrupoS",width=100,anchor="center")
 treeview.column("TipoS",width=100,anchor="center")
 treeview.column("CentroM",width=120)
@@ -121,8 +175,8 @@ scorll_y.grid(row=10,column=2,sticky="ns")
 #Doctores
 nombreLabel=ttk.Label(frame_doctores, text="Nombre:")
 nombreLabel.grid(row=0, column=1, padx=10, pady=10)
-nombreEntry=ttk.Entry(frame_doctores)
-nombreEntry.grid(row=0, column=2, padx=10, pady=10)
+nombreEntryD=ttk.Entry(frame_doctores)
+nombreEntryD.grid(row=0, column=2, padx=10, pady=10)
 #Especialidad
 especialidadLabel=ttk.Label(frame_doctores, text="Especialidad:")
 especialidadLabel.grid(row=2, column=1, padx=10, pady=10)
@@ -130,8 +184,8 @@ especialidad=tk.StringVar()
 especialidadCombo=ttk.Combobox(frame_doctores, values=["Cardiologia", "Neurologia","Pediatria","Traumatologia", "Ninguno"], state="readonly",textvariable=especialidad)
 especialidadCombo.grid(row=2, column=2, padx=10, pady=10)
 #Edad
-edadP=tk.Label(frame_doctores, text="Edad:")
-edadP.grid(row=3, column=1, padx=5, pady=5)
+edadD=tk.Label(frame_doctores, text="Edad:")
+edadD.grid(row=3, column=1, padx=5, pady=5)
 edadSpin=tk.Spinbox(frame_doctores, from_=18, to=90)
 edadSpin.grid(row=3, column=2, padx=10, pady=10)
 #Telefono
@@ -143,27 +197,27 @@ telEntry.grid(row=4, column=2, padx=10, pady=10)
 btn_frame=ttk.Frame(frame_doctores)
 btn_frame.grid(row=5,column=1,columnspan=2,pady=5,sticky="w")
 #boton registrar
-btn_registrar=tk.Button(btn_frame,text="Registrar",command="",bg="#008f39",fg="white")
+btn_registrar=tk.Button(btn_frame,text="Registrar",command=registrarDoctores,bg="#008f39",fg="white")
 btn_registrar.grid(row=5,column=1,padx=5)
 #boton Eliminar
 btn_eliminar=tk.Button(btn_frame,text="Eliminar",command="",bg="red",fg="white")
 btn_eliminar.grid(row=5,column=2,padx=5)
 #Crear TreeView 
-treeview = ttk.Treeview(frame_doctores,columns=("Nombre","Especialidad", "Edad","telefono"),show="headings")
+treeviewD = ttk.Treeview(frame_doctores,columns=("Nombre","Especialidad", "Edad","telefono"),show="headings")
 #Definir encabezados
-treeview.heading("Nombre",text="Nombre Completo")
-treeview.heading("Especialidad",text="Especialidad")
-treeview.heading("Edad",text="Edad")
-treeview.heading("telefono",text="telefono")
+treeviewD.heading("Nombre",text="Nombre Completo")
+treeviewD.heading("Especialidad",text="Especialidad")
+treeviewD.heading("Edad",text="Edad")
+treeviewD.heading("telefono",text="telefono")
 #Definir anchos
-treeview.column("Nombre",width=120)
-treeview.column("Especialidad",width=120)
-treeview.column("Edad",width=50,anchor="center")
-treeview.column("telefono",width=120,anchor="center")
+treeviewD.column("Nombre",width=120)
+treeviewD.column("Especialidad",width=120)
+treeviewD.column("Edad",width=50,anchor="center")
+treeviewD.column("telefono",width=120,anchor="center")
 #Ubicar el TreeView
-treeview.grid(row=6,column=1,columnspan=2,sticky="nsew",padx=5,pady=10)
+treeviewD.grid(row=6,column=1,columnspan=2,sticky="nsew",padx=5,pady=10)
 #Scrollbar
 scorll_y=ttk.Scrollbar(frame_pacientes,orient="vertical",command=treeview.yview)
-treeview.configure(yscrollcommand=scorll_y.set)
+treeviewD.configure(yscrollcommand=scorll_y.set)
 scorll_y.grid(row=6,column=2,sticky="ns")
 ventana_principal.mainloop()
